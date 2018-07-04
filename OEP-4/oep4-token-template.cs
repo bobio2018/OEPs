@@ -12,7 +12,7 @@ namespace Ontology
         //Token Settings
         public static string Name() => "NameOfTheToken";
         public static string Symbol() => "SymbolOfTheToken";
-        public static readonly byte[] Owner = "ATrzHaicmhRj15C3Vv6e6gLfLqhSD2PtTr".ToScriptHash();
+        public static readonly byte[] owner = "ATrzHaicmhRj15C3Vv6e6gLfLqhSD2PtTr".ToScriptHash();
         public static byte Decimals() => 8;
         private const ulong factor = 100000000; //decided by Decimals()
         private const ulong totalAmount = 100000000 * factor;
@@ -109,8 +109,8 @@ namespace Ontology
             byte[] total_supply = Storage.Get(Storage.CurrentContext, totalSupply);
             if (total_supply.Length != 0) return false;
 
-            Storage.Put(Storage.CurrentContext, transferPrefix.Concat(Owner), totalAmount);
-            Transferred(null, transferPrefix.Concat(Owner), totalAmount);
+            Storage.Put(Storage.CurrentContext, transferPrefix.Concat(owner), totalAmount);
+            Transferred(null, owner, totalAmount);
 
             Storage.Put(Storage.CurrentContext, totalSupply, totalAmount);
             return true;
