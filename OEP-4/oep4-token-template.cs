@@ -190,18 +190,23 @@ namespace Ontology
         {
             if (amount < 0) return false;
             if (!Runtime.CheckWitness(sender)) return false;
-
-            BigInteger approveValue = Storage.Get(Storage.CurrentContext, approvePrefix.Concat(from).Concat(sender)).AsBigInteger();
+            
+            byte[] approveKey = approvePrefix.Concat(from).Concat(sender);
+            BigInteger approveValue = Storage.Get(Storage.CurrentContext, approveKey).AsBigInteger();
             if(approveValue < amount) return false;
 
             if (approveValue == amount)
-                Storage.Delete(Storage.CurrentContext, approvePrefix.Concat(from).Concat(sender));
+                Storage.Delete(Storage.CurrentContext, approveKey);
             else
-                Storage.Put(Storage.CurrentContext, approvePrefix.Concat(from).Concat(sender), approveValue - amount);
+                Storage.Put(Storage.CurrentContext, approveKey, approveValue - amount);
 
-            return Transfer(transferPrefix.Concat(from), transferPrefix.Concat(to), amount);
+            return Transfer(from, to, amount);
         }
 
+        /// <summary>query `spender` can withdraw the amount of token from `owner` account </summary>
+        /// <returns>withdraw amount of token</returns>
+        /// <param name="owner">account or contract address</param>
+        /// <param name="spender">account or contract address</param>
         public static BigInteger Allowance(byte[] owner, byte[] spender)
         {
             return Storage.Get(Storage.CurrentContext, approvePrefix.Concat(owner).Concat(spender)).AsBigInteger();
