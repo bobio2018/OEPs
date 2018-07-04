@@ -32,73 +32,70 @@ namespace Ontology
 
         public static Object Main(string operation, params object[] args)
         {
-            if (Runtime.Trigger == TriggerType.Application)
+            if (operation == "init") return Init();
+            if (operation == "totalSupply") return TotalSupply();
+            if (operation == "name") return Name();
+            if (operation == "symbol") return Symbol();
+            if (operation == "transfer")
             {
-                if (operation == "init") return Init();
-                if (operation == "totalSupply") return TotalSupply();
-                if (operation == "name") return Name();
-                if (operation == "symbol") return Symbol();
-                if (operation == "transfer")
-                {
-                    if (args.Length != 3) return false;
-                    byte[] from = (byte[])args[0];
-                    if(from.Length != 20) {
-                        return false;
-                    }
-                    byte[] to = (byte[])args[1];
-                    if(to.Length != 20) {
-                        return false;
-                    }
-                    BigInteger value = (BigInteger)args[2];
-                    return Transfer(from, to, value);
+                if (args.Length != 3) return false;
+                byte[] from = (byte[])args[0];
+                if(from.Length != 20) {
+                    return false;
                 }
-                 if (operation == "approve")
-                {
-                    if (args.Length != 3) return false;
-                    byte[] owner = (byte[])args[0];
-                    if(owner.Length != 20) {
-                        return false;
-                    }
-                    byte[] spender = (byte[])args[1];
-                    if(spender.Length != 20) {
-                        return false;
-                    }
-                    BigInteger value = (BigInteger)args[2];
-                    return Approve(owner, spender, value);
+                byte[] to = (byte[])args[1];
+                if(to.Length != 20) {
+                    return false;
                 }
-                if (operation == "transferFrom")
-                {
-                    if (args.Length != 4) return false;
-                    byte[] sender = (byte[])args[0];
-                    if(sender.Length != 20) {
-                        return false;
-                    }
-                    byte[] from = (byte[])args[1];
-                    if(from.Length != 20) {
-                        return false;
-                    }
-                    byte[] to = (byte[])args[1];
-                    if(to.Length != 20) {
-                        return false;
-                    }
-                    BigInteger amount = (BigInteger)args[2];
-                    return TransferFrom(sender, from, to, amount);
-                }
-                if (operation == "balanceOf")
-                {
-                    if (args.Length != 1) return 0;
-                    byte[] address = (byte[])args[0];
-                    return BalanceOf(address);
-                }
-                 if (operation == "allowance")
-                {
-                    if (args.Length != 2) return 0;
-                    byte[] owner = (byte[])args[0];
-                    byte[] spender = (byte[])args[0];
-                    return Allowance(owner, spender);
-                }
-                if (operation == "decimals") return Decimals();
+                BigInteger value = (BigInteger)args[2];
+                return Transfer(from, to, value);
             }
+             if (operation == "approve")
+            {
+                if (args.Length != 3) return false;
+                byte[] owner = (byte[])args[0];
+                if(owner.Length != 20) {
+                    return false;
+                }
+                byte[] spender = (byte[])args[1];
+                if(spender.Length != 20) {
+                    return false;
+                }
+                BigInteger value = (BigInteger)args[2];
+                return Approve(owner, spender, value);
+            }
+                if (operation == "transferFrom")
+            {
+                if (args.Length != 4) return false;
+                byte[] sender = (byte[])args[0];
+                if(sender.Length != 20) {
+                    return false;
+                }
+                byte[] from = (byte[])args[1];
+                if(from.Length != 20) {
+                    return false;
+                }
+                byte[] to = (byte[])args[1];
+                if(to.Length != 20) {
+                    return false;
+                }
+                BigInteger amount = (BigInteger)args[2];
+                return TransferFrom(sender, from, to, amount);
+            }
+            if (operation == "balanceOf")
+            {
+                if (args.Length != 1) return 0;
+                byte[] address = (byte[])args[0];
+                return BalanceOf(address);
+            }
+             if (operation == "allowance")
+            {
+                if (args.Length != 2) return 0;
+                byte[] owner = (byte[])args[0];
+                byte[] spender = (byte[])args[0];
+                return Allowance(owner, spender);
+            }
+            if (operation == "decimals") return Decimals();
             return false;
         }
 
