@@ -178,20 +178,20 @@ namespace Ontology
         }
 
          /// <summary>
-        ///     transferFrom allows `sender` to withdraw amount of token from `from` account to `to` account
+        ///     transferFrom allows `spender` to withdraw amount of token from `from` account to `to` account
         ///     the address can be account or contract address which should be 20-byte
         /// </summary>
         /// <returns>transferFrom result, success or failure</returns>
-        /// <param name="sender">approve owner address</param>
+        /// <param name="spender">approve owner address</param>
         /// <param name="from">approve owner address</param>
         /// <param name="to">approve spender address</param>
         /// <param name="value">approve amount</param>
-        public static bool TransferFrom(byte[] sender, byte[] from, byte[] to, BigInteger amount)
+        public static bool TransferFrom(byte[] spender, byte[] from, byte[] to, BigInteger amount)
         {
             if (amount < 0) return false;
-            if (!Runtime.CheckWitness(sender)) return false;
+            if (!Runtime.CheckWitness(spender)) return false;
             
-            byte[] approveKey = approvePrefix.Concat(from).Concat(sender);
+            byte[] approveKey = approvePrefix.Concat(from).Concat(spender);
             BigInteger approveValue = Storage.Get(Storage.CurrentContext, approveKey).AsBigInteger();
             if(approveValue < amount) return false;
 
